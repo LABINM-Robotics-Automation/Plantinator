@@ -1,0 +1,18 @@
+Luego de instalar el sistema operativo se debe verificar la ip de la computadora, que va a 
+almacenar y ejecutar el sistema de visiòn artificial, esta computadora debe poseer la ip
+192.168.1.103, esto se debe a que el servidor modbus, se ejecuta en la computadora, y 
+el ip que adquiere es el de la compùtadora misma, por otro lado el PLC del robot, esta
+configurado a buscar el servidor modbus en esa direcciòn ip.
+
+Instalar miniconda, siguiendo las siguientes instrucciones:
+https://docs.conda.io/projects/miniconda/en/latest/
+
+
+Instalar los requirements del proyecto.
+
+Ejecutar el comando:
+sudo /home/robot/miniconda3/envs/plantinator/bin/python modbus_gateway.py
+
+
+Ejecutar el comando:
+python SeedlingClassifier_online_v1.0.py

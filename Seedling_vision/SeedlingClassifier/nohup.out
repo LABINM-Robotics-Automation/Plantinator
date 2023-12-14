@@ -1,0 +1,60 @@
+2021-09-09 11:16:00,769 [   8121]   WARN - nSystem.impl.ActionManagerImpl - keymap "Visual Studio" not found [Plugin: com.intellij] 
+2021-09-09 11:16:00,772 [   8124]   WARN - nSystem.impl.ActionManagerImpl - keymap "Eclipse" not found [Plugin: com.intellij] 
+2021-09-09 11:16:00,772 [   8124]   WARN - nSystem.impl.ActionManagerImpl - keymap "NetBeans 6.5" not found [Plugin: com.intellij] 
+2021-09-09 11:16:00,772 [   8124]   WARN - nSystem.impl.ActionManagerImpl - keymap "Visual Studio" not found [Plugin: com.intellij] 
+2021-09-09 11:16:01,315 [   8667]   WARN - nSystem.impl.ActionManagerImpl - keymap "Eclipse" not found [Plugin: org.jetbrains.plugins.github] 
+2021-09-09 11:16:01,317 [   8669]   WARN - nSystem.impl.ActionManagerImpl - keymap "Eclipse" not found [Plugin: PythonCore] 
+2021-09-09 11:16:01,317 [   8669]   WARN - nSystem.impl.ActionManagerImpl - keymap "NetBeans 6.5" not found [Plugin: PythonCore] 
+2021-09-09 11:16:03,097 [  10449]   WARN - l.NotificationGroupManagerImpl - Notification group CodeWithMe is already registered (group=com.intellij.notification.NotificationGroup@7832f8e3). Plugin descriptor: PluginDescriptor(name=Code With Me, id=com.jetbrains.codeWithMe, descriptorPath=plugin.xml, path=/snap/pycharm-community/250/plugins/cwm-plugin, version=212.5080.64, package=null) 
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  SIGBUS (0x7) at pc=0x00007fef5ae5d980, pid=20900, tid=20956
+#
+# JRE version: OpenJDK Runtime Environment JBR-11.0.11.9-1504.16-jcef (11.0.11+9) (build 11.0.11+9-b1504.16)
+# Java VM: OpenJDK 64-Bit Server VM JBR-11.0.11.9-1504.16-jcef (11.0.11+9-b1504.16, mixed mode, tiered, compressed oops, g1 gc, linux-amd64)
+# Problematic frame:
+# C  [libz.so.1+0x9980]
+#
+# Core dump will be written. Default location: Core dumps may be processed with "/usr/share/apport/apport %p %s %c %d %P %E" (or dumping to /home/labinm-upao/Seedling_vision/SeedlingClassifier/core.20900)
+#
+# An error report file with more information is saved as:
+# /home/labinm-upao/java_error_in_pycharm_20900.log
+[thread 20941 also had an error]
+#
+# If you would like to submit a bug report, please visit:
+#   https://bugreport.java.com/bugreport/crash.jsp
+# The crash happened outside the Java Virtual Machine in native code.
+# See problematic frame for where to report the bug.
+#
+Aborted (core dumped)
+2021-09-09 11:18:24,652 [   1742]   WARN - nSystem.impl.ActionManagerImpl - keymap "Visual Studio" not found [Plugin: com.intellij] 
+2021-09-09 11:18:24,655 [   1745]   WARN - nSystem.impl.ActionManagerImpl - keymap "Eclipse" not found [Plugin: com.intellij] 
+2021-09-09 11:18:24,655 [   1745]   WARN - nSystem.impl.ActionManagerImpl - keymap "NetBeans 6.5" not found [Plugin: com.intellij] 
+2021-09-09 11:18:24,656 [   1746]   WARN - nSystem.impl.ActionManagerImpl - keymap "Visual Studio" not found [Plugin: com.intellij] 
+2021-09-09 11:18:24,682 [   1772]   WARN - nSystem.impl.ActionManagerImpl - keymap "Eclipse" not found [Plugin: PythonCore] 
+2021-09-09 11:18:24,682 [   1772]   WARN - nSystem.impl.ActionManagerImpl - keymap "NetBeans 6.5" not found [Plugin: PythonCore] 
+2021-09-09 11:18:24,708 [   1798]   WARN - nSystem.impl.ActionManagerImpl - keymap "Eclipse" not found [Plugin: org.jetbrains.plugins.github] 
+2021-09-09 11:18:25,178 [   2268]   WARN - l.NotificationGroupManagerImpl - Notification group CodeWithMe is already registered (group=com.intellij.notification.NotificationGroup@77f2d174). Plugin descriptor: PluginDescriptor(name=Code With Me, id=com.jetbrains.codeWithMe, descriptorPath=plugin.xml, path=/snap/pycharm-community/250/plugins/cwm-plugin, version=212.5080.64, package=null) 
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  SIGBUS (0x7) at pc=0x00007f563fb60980, pid=21038, tid=21090
+#
+# JRE version: OpenJDK Runtime Environment JBR-11.0.11.9-1504.16-jcef (11.0.11+9) (build 11.0.11+9-b1504.16)
+# Java VM: OpenJDK 64-Bit Server VM JBR-11.0.11.9-1504.16-jcef (11.0.11+9-b1504.16, mixed mode, tiered, compressed oops, g1 gc, linux-amd64)
+# Problematic frame:
+# C  [libz.so.1+0x9980]
+#
+# Core dump will be written. Default location: Core dumps may be processed with "/usr/share/apport/apport %p %s %c %d %P %E" (or dumping to /home/labinm-upao/Seedling_vision/SeedlingClassifier/core.21038)
+#
+# An error report file with more information is saved as:
+# /home/labinm-upao/java_error_in_pycharm_21038.log
+[thread 21074 also had an error]
+#
+# If you would like to submit a bug report, please visit:
+#   https://bugreport.java.com/bugreport/crash.jsp
+# The crash happened outside the Java Virtual Machine in native code.
+# See problematic frame for where to report the bug.
+#
+Aborted (core dumped)
