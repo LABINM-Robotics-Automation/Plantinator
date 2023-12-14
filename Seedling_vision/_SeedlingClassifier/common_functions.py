@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import pyrealsense2 as rs
-#from pyleafarea import pyAreaCalc,pyTriangulateAndArea
+from pyleafarea import pyAreaCalc,pyTriangulateAndArea
 from sklearn.cluster import KMeans
 from time import time,sleep,localtime
 import pickle
@@ -32,6 +32,78 @@ class seedling():
         self.height = None
         self.enclosingBox = None
         self.peakHeight = None
+
+
+import csv
+import os
+
+class csv_report_builder():
+    # seed_params = [area, heigth, quality, distance]
+    # data = [seed_params, seed_params, seed_params, ... ]
+    
+    def __init__(self):
+        self.csv_list = None
+        self.params = ['area', 'height', 'quality', 'cone_distance','image_path']
+        self.ltime = localtime()
+
+
+    def save_csv(self, csv_path):
+        if self.csv_list == None:
+            print("self.csv_list is a None-type, run update_data() method to save params in csv_list")
+            return
+        
+        with open(f'{csv_path}', 'w', newline='') as file:
+            # Step 4: Using csv.writer to write the list to the CSV file
+            writer = csv.writer(file)
+            writer.writerows(self.csv_list) # Use writerow for single list
+        return
+        
+    def update_data(self, data):
+        if self.csv_list is None:
+            self.csv_list = [self.params]
+        else:
+            for seed_params in data:
+                print(seed_params)
+                #if len(seed_params) == len(self.params):
+                self.csv_list.append(seed_params)
+                #else:
+                #    print("seed_params from data, and self.params has not the same length")
+            
+        return
+
+    #-----------------------------------------------------------------------------------------------------------
+    #----------------------------------------- WARNING ---------------------------------------------------------
+    #-----------------------------------------------------------------------------------------------------------
+    # This function is under development, please continue scrolling ....
+
+    def save_images(self, gallery_path, list_seed_images, **kwargs):
+
+        if os.path.exists(gallery_path) == False:
+            while os.path.exists(gallery_path) == False:
+                os.mkdir(gallery_path)
+
+        gallery_path = os.path.join(gallery_path, f'{self.ltime.tm_hour}{self.ltime.tm_mday}{self.ltime.tm_mon}{self.ltime.tm_year}/')
+        
+        if os.path.exists(gallery_path) == False:
+            while os.path.exists(gallery_path) == False:
+                os.mkdir(gallery_path)
+
+        for key, value in kwargs.items():
+
+            if key == 'order':
+                if value == 'even':
+                    for idx, image in enumerate(list_seed_images):
+                        print(type(image))
+                        #if type(image) != None:
+                        #    cv2.imwrite(f'{gallery_path}/seed_even_{idx}.png', image)
+
+                if value == 'odd':
+                    for idx, image in enumerate(list_seed_images):
+                        print(type(image))
+                        #if type(image) != None:
+                        #    cv2.imwrite(f'{gallery_path}/seed_odd_{idx}.png', image)
+
+    #-----------------------------------------------------------------------------------------------------------
 
 
 def colorizeDepth(depth,min,max):
@@ -609,10 +681,23 @@ class seedlingClassifier():
         cv2.rectangle(rgbGUI, *S0.enclosingBox, [255, 0, 0], 1)
         cv2.rectangle(rgbGUI, *S1.enclosingBox, [255, 0, 0], 1)
         cv2.rectangle(rgbGUI, *S2.enclosingBox, [255, 0, 0], 1)
-        print("S0: Area = {:3.3f} cm\u00b2, Average Height= {:3.3f} cm, quality? = {}, Cone distance = {}".format(S0.area, S0.height,q0,cone_distances[0]))
-        print("S1: Area = {:3.3f} cm\u00b2, Average Height= {:3.3f} cm, quality? = {}, Cone distance = {}".format(S1.area, S1.height,q1,cone_distances[1]))
-        print("S2: Area = {:3.3f} cm\u00b2, Average Height= {:3.3f} cm, quality? = {}, Cone distance = {}".format(S2.area, S2.height,q2,cone_distances[2]))
+        print("S0: Area = {:3.3f} cm\u00b2, Average Height= {:3.3f} cm, quality? = {}, Cone distance = {}".format(S0.area, S0.height, q0, cone_distances[0]))
+        print("S1: Area = {:3.3f} cm\u00b2, Average Height= {:3.3f} cm, quality? = {}, Cone distance = {}".format(S1.area, S1.height, q1, cone_distances[1]))
+        print("S2: Area = {:3.3f} cm\u00b2, Average Height= {:3.3f} cm, quality? = {}, Cone distance = {}".format(S2.area, S2.height, q2, cone_distances[2]))
         print("Processing Time: {} seconds".format(time() - __processing_start))
+        
+
+        #--------------------------------to save in a csv file the information ---------------------------------
+
+        results = [
+            [S0.area, S0.height, q0, cone_distances[0]],
+            [S1.area, S1.height, q1, cone_distances[1]],
+            [S2.area, S2.height, q2, cone_distances[2]]
+        ]
+
+        #--------------------------------------------------------------------------------------------------------
+        
+        
         if self.modbusConnectedFlag == True:
             __sending_start = time()
             print("Sending results to the server ...")
@@ -620,5 +705,5 @@ class seedlingClassifier():
             self.correctZValues(cone_distances)
             self.modbusClient.cvFinishProcessing()
             print("Results sent to server. Sending time: {} seconds \n".format(time()-__sending_start))
-        return rgbGUI, chopSeedlings
+        return rgbGUI, chopSeedlings, results
 

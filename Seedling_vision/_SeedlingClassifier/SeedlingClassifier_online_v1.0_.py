@@ -480,7 +480,8 @@ while True:
             # if CV_MODE == "offline":
             #     cvSystem.rgbImg = ODD_RGB
             #     cvSystem.depthImg = ODD_DEPTH
-            rgbGUI = cvSystem.processSeedlings("odd",CV_MODE) # IM CHANGING CONSTANTLY THIS PARAMETER
+            rgbGUI,chop_seeds,results = cvSystem.processSeedlings("odd",CV_MODE) # IM CHANGING CONSTANTLY THIS PARAMETER
+            
             if CV_MODE == "online":
                 #SAVE IMAGES
                 if SAVE_IMAGES is True:
@@ -491,6 +492,7 @@ while True:
                         name = "images/IMG_{}_{}_{}".format(ltime.tm_hour, ltime.tm_min,ltime.tm_sec)
                     cv2.imwrite(name+".png",cvSystem.rgbImg)
                     np.save(name+".npy",cvSystem.depthImg)
+        
         elif CV_system_switch is "SysE":
             if CV_MODE is "offline":
                 cvSystem.rgbImg = ODD_RGB
@@ -501,6 +503,7 @@ while True:
             rgbGUI = segmentedImg.copy()
         else:
             print("WARNING: Seedling Classifier system wasn't specified")
+    
     elif plcInstruction == lsmodb.PLC_PROCEVEN_INST:
         if CV_system_switch is "SysP":
             if cvSystem.modbusConnectedFlag is True:
@@ -508,7 +511,9 @@ while True:
             if CV_MODE is "offline":
                 cvSystem.rgbImg = EVEN_RGB
                 cvSystem.depthImg = EVEN_DEPTH
-            rgbGUI = cvSystem.processSeedlings("even",CV_MODE)
+            rgbGUI,chop_seeds,results = cvSystem.processSeedlings("even",CV_MODE)
+            
+            
             if CV_MODE == "online":
                 # SAVE IMAGES
                 if SAVE_IMAGES is True:
@@ -519,6 +524,7 @@ while True:
                         name = "images/IMG_{}_{}_{}".format(ltime.tm_hour, ltime.tm_min,ltime.tm_sec)
                     cv2.imwrite(name + ".png", cvSystem.rgbImg)
                     np.save(name + ".npy", cvSystem.depthImg)
+        
         elif CV_system_switch is "SysE":
             if CV_MODE is "offline":
                 cvSystem.rgbImg = EVEN_RGB

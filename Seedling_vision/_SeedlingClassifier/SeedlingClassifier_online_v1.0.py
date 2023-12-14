@@ -363,8 +363,8 @@ intrinsics.fy=905.369
 intrinsics.model=rs.distortion.inverse_brown_conrady
 intrinsics.coeffs=[0.0,0.0,0.0,0.0,0.0]
 CV_system_switch = "SysP"
-#ODD_RGB = cv2.imread("Offline_files/IMG_17_50_40.jpg",cv2.IMREAD_COLOR)
-#ODD_DEPTH = np.load("Offline_files/IMG_17_50_40.npy")
+ODD_RGB = cv2.imread("Offline_files/IMG_17_50_40.jpg",cv2.IMREAD_COLOR)
+ODD_DEPTH = np.load("Offline_files/IMG_17_50_40.npy")
 #ODD_RGB = cv2.imread("../datasets/seedlings_18_06_2021/IMG_15_5_36.jpg",cv2.IMREAD_COLOR)
 #ODD_DEPTH = np.load("../datasets/seedlings_18_06_2021/IMG_15_5_36.npy")
 EVEN_RGB = cv2.imread("Offline_files/IMG_15_38_14.jpg",cv2.IMREAD_COLOR)
@@ -470,9 +470,15 @@ if modbusClientConnectedFlag is True:
     modbusClient.writeCvStatus(lsmodb.CV_WAITING_STAT)
 plcInstruction = lsmodb.PLC_PROCODD_INST
 
+csv_builder = csv_report_builder()
+
 while True:
     if modbusClientConnectedFlag is True:
         plcInstruction = modbusClient.getPLCInstruction()
+
+
+    ################### ODD SEEDS #######################
+
     if plcInstruction == lsmodb.PLC_PROCODD_INST:
         if CV_system_switch == "SysP":
             if cvSystem.modbusConnectedFlag is True:
@@ -480,7 +486,11 @@ while True:
             # if CV_MODE == "offline":
             #     cvSystem.rgbImg = ODD_RGB
             #     cvSystem.depthImg = ODD_DEPTH
-            rgbGUI = cvSystem.processSeedlings("odd",CV_MODE) # IM CHANGING CONSTANTLY THIS PARAMETER
+            
+            rgbGUI,chop_seeds,data = cvSystem.processSeedlings("odd",CV_MODE) # IM CHANGING CONSTANTLY THIS PARAMETER
+            csv_builder.update_data(data)
+            csv_builder.save_images(f'./records/gallery', list_seed_images=chop_seeds, order = 'odd')
+
             if CV_MODE == "online":
                 #SAVE IMAGES
                 if SAVE_IMAGES is True:
@@ -491,6 +501,7 @@ while True:
                         name = "images/IMG_{}_{}_{}".format(ltime.tm_hour, ltime.tm_min,ltime.tm_sec)
                     cv2.imwrite(name+".png",cvSystem.rgbImg)
                     np.save(name+".npy",cvSystem.depthImg)
+        
         elif CV_system_switch is "SysE":
             if CV_MODE is "offline":
                 cvSystem.rgbImg = ODD_RGB
@@ -501,6 +512,10 @@ while True:
             rgbGUI = segmentedImg.copy()
         else:
             print("WARNING: Seedling Classifier system wasn't specified")
+    
+    
+    ################### EVEN SEEDS #######################
+    
     elif plcInstruction == lsmodb.PLC_PROCEVEN_INST:
         if CV_system_switch is "SysP":
             if cvSystem.modbusConnectedFlag is True:
@@ -508,7 +523,10 @@ while True:
             if CV_MODE is "offline":
                 cvSystem.rgbImg = EVEN_RGB
                 cvSystem.depthImg = EVEN_DEPTH
-            rgbGUI = cvSystem.processSeedlings("even",CV_MODE)
+            rgbGUI,chop_seeds,data = cvSystem.processSeedlings("even",CV_MODE)
+            csv_builder.update_data(data)
+            csv_builder.save_images(f'./records/gallery', list_seed_images=chop_seeds, order = 'even')
+
             if CV_MODE == "online":
                 # SAVE IMAGES
                 if SAVE_IMAGES is True:
@@ -529,9 +547,24 @@ while True:
             rgbGUI = segmentedImg.copy()
         else:
             print("WARNING: Seedling Classifier system wasn't specified")
+
+    ################### EXIT #######################
     try:
         cv2.imshow("Results",rgbGUI)
-        cv2.waitKey(15)
+        k = cv2.waitKey(10)
+
+        if k & 0xFF == ord('q'):
+            ltime = localtime()
+            
+            
+            csv_builder.save_csv(f'./records/plantinator1_{ltime.tm_hour}{ltime.tm_mday}{ltime.tm_mon}{ltime.tm_year}.csv')
+            cv2.destroyAllWindows()
+            break
+
+
+
     except:
         pass
-cv2.destroyAllWindows()
+    
+    
+ 
